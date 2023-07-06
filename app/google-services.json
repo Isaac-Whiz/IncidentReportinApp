@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "260250652232",
+    "project_id": "incidentreportingapp-22ff2",
+    "storage_bucket": "incidentreportingapp-22ff2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260250652232:android:ba016f7462fc00ca11127d",
+        "android_client_info": {
+          "package_name": "com.example.incidentreportingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "260250652232-ih2ejqjr9avdeso3hiu81u4d3thnmorv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrybK0rByE4D48HQdPFhEuompukqHye_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "260250652232-ih2ejqjr9avdeso3hiu81u4d3thnmorv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

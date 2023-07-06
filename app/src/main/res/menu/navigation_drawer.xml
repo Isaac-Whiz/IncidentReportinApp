@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/userPolicy"
+        android:fontFamily="serif"
+        android:icon="@mipmap/policy"
+        android:textStyle="bold"
+        android:title="User Policy" />
+    <item
+        android:id="@+id/terms"
+        android:visible="false"
+        android:fontFamily="serif"
+        android:icon="@mipmap/contract"
+        android:textStyle="bold"
+        android:title="Terms and Conditions" />
+    <item
+        android:id="@+id/aboutUs"
+        android:fontFamily="serif"
+        android:icon="@mipmap/information"
+        android:textStyle="bold"
+        android:title="About Us" />
+    <item
+        android:id="@+id/reports"
+        android:fontFamily="serif"
+        android:icon="@mipmap/report"
+        android:textStyle="bold"
+        android:title="Reports" />
+    <item
+        android:id="@+id/logout"
+        android:fontFamily="serif"
+        android:icon="@mipmap/logout"
+        android:textStyle="bold"
+        android:title="Logout" />
+</menu>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".RegisterActivity">
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/txtName"
+        android:layout_height="wrap_content"
+        android:text="Incident Reporting Application"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="15dp"/>
+    
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/First"
+    android:layout_below="@id/txtName"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="32dp"
+    android:layout_marginTop="30dp"
+    android:layout_marginEnd="32dp"
+    android:hint="First name">
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editFirstName"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</com.google.android.material.textfield.TextInputLayout>
+
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/Second"
+    android:layout_below="@+id/First"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="32dp"
+    android:layout_marginTop="30dp"
+    android:layout_marginEnd="32dp"
+    android:hint="Last name">
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editSecondName"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</com.google.android.material.textfield.TextInputLayout>
+
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/Contact"
+    android:layout_below="@+id/Second"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="32dp"
+    android:layout_marginTop="30dp"
+    android:layout_marginEnd="32dp"
+    android:hint="Contact">
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editContact"
+        android:inputType="phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</com.google.android.material.textfield.TextInputLayout>
+
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/Email"
+    android:layout_below="@+id/Contact"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="32dp"
+    android:layout_marginTop="30dp"
+    android:layout_marginEnd="32dp"
+    android:hint="Email">
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editEmail"
+        android:inputType="textEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Password"
+        android:layout_below="@id/Email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Password">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editPassword"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkbox"
+        android:checked="false"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/Password"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Password"
+        android:id="@+id/txtViewTerms"
+        android:textStyle="italic"
+        android:textColor="@color/black"
+        android:layout_toRightOf="@id/checkbox"
+        android:text="@string/view_terms"
+        android:layout_marginTop="30dp"/>
+
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/btnRegister"
+    android:text="Register"
+    android:textAllCaps="false"
+    android:layout_below="@id/checkbox"
+    android:layout_marginStart="32dp"
+    android:layout_marginTop="20dp"/>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/btnRegister"
+    android:id="@+id/txtElse"
+    android:text="If you have an account, login instead."
+    android:layout_marginStart="32dp"
+    android:layout_marginTop="20dp"/>
+
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/btnLogin"
+    android:text="Login"
+    android:textAllCaps="false"
+    android:layout_below="@id/txtElse"
+    android:layout_marginStart="32dp"
+    android:layout_marginTop="20dp"/>
+
+</RelativeLayout>
