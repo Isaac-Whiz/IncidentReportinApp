@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="5dp"
+    app:cardCornerRadius="10dp"
+    android:id="@+id/report_layout">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtAuthorReport"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Author: "
+            android:layout_toLeftOf="@+id/txtAuthorReport"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtCategoryReport"
+            android:layout_below="@id/txtAuthorReport"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/txtAuthorReport"
+            android:text="Category: "
+            android:layout_toLeftOf="@+id/txtCategoryReport"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTimeReport"
+            android:layout_below="@id/txtCategoryReport"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/txtCategoryReport"
+            android:text="Time and Date: "
+            android:layout_toLeftOf="@+id/txtTimeReport"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtDescriptionReport"
+            android:layout_below="@id/txtTimeReport"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/txtTimeReport"
+            android:text="Description: "
+            android:layout_toLeftOf="@+id/txtDescriptionReport"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtImagePathsReport"
+            android:layout_below="@id/txtDescriptionReport"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/txtDescriptionReport"
+            android:text="Image Paths: "
+            android:layout_toLeftOf="@+id/txtImagePathsReport"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtLocationReport"
+            android:layout_below="@id/txtImagePathsReport"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/txtImagePathsReport"
+            android:text="Location: "
+            android:layout_toLeftOf="@+id/txtLocationReport"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtVideoUrlReport"
+            android:layout_below="@id/txtLocationReport"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/txtLocationReport"
+            android:text="Video Url: "
+            android:layout_toLeftOf="@+id/txtVideoUrlReport"/>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

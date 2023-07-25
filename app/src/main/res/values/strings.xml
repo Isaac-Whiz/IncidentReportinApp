@@ -14,88 +14,26 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="long_hold_video">Long press the button to record video.</string>
     <string name="title_activity_terms">Terms_Activity</string>
+    <string name="MAP_API_KEY">AIzaSyDtwI2crDNZUEfNhLT8qR055IhSyOJn98M</string>
     <string name="terms">
-        Please read the following User Terms and Conditions ("Terms") carefully before using the Incident Reporting Application ("the Application").
-        By using the Application, you agree to comply with and be bound by these Terms. 
-        If you do not agree to these Terms, please refrain from using the Application.
-
-User Responsibilities:
-a. You must use the Application responsibly and only for its intended purpose of reporting incidents accurately and in good faith.
-b. You are responsible for providing accurate and complete information when reporting incidents through the Application.
-c. You must not misuse the Application or submit false or malicious reports. Any misuse or fraudulent activities will be subject to legal consequences.
-
-Reporting Incidents:
-a. By submitting an incident report through the Application, you grant permission for the information to be stored, analyzed, and shared with relevant authorities for investigation and resolution purposes.
-b. You understand that submitting an incident report does not guarantee immediate response or action, as the authorities will prioritize incidents based on severity and available resources.
-
-Appropriate Use:
-a. You agree not to use the Application for any unlawful or prohibited activities.
-b. You must not attempt to gain unauthorized access to the Application`s servers or interfere with its functionality.
-c. You shall not engage in any activities that may disrupt or impair the Application`s performance or compromise the security and privacy of other users` data.
-
-Privacy and Data Protection:
-a. The Application collects and stores personal information as required for incident reporting purposes. By using the Application, you consent to the collection, storage, and processing of your personal information as outlined in the Application`s Privacy Policy.
-b. The Application employs security measures to protect user data; however, no system can guarantee absolute security. You acknowledge and accept any potential risks associated with the transmission and storage of your data.
-
-Intellectual Property:
-a. The Application and its contents, including but not limited to graphics, logos, and software, are protected by intellectual property rights and are owned or licensed by the Application's developers.
-b. You may not reproduce, modify, distribute, or exploit any part of the Application without prior written permission from the rightful owners.
-
-Limitation of Liability:
-a. The Application is provided on an "as is" basis. While efforts are made to ensure its accuracy and functionality, no warranties or guarantees are provided regarding its reliability, availability, or suitability for specific purposes.
-b. The developers of the Application shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising out of or related to the use or inability to use the Application.
-
-Modification of Terms:
-a. The developers of the Application reserve the right to modify or update these Terms at any time without prior notice. It is your responsibility to review the Terms periodically for any changes.
-b. Your continued use of the Application after the modifications indicates your acceptance of the revised Terms.
-
-Governing Law:
-a. These Terms shall be governed by and construed in accordance with the laws of the jurisdiction where the Application is developed.
-
-By using the Incident Reporting Application, you acknowledge that you have read, understood, and agreed to these User Terms and Conditions. If you do not agree with any provision of these Terms, please discontinue the use of the Application.
-</string>
+        Please read the following User Terms and Conditions ("Terms") carefully before using the Incident Reporting Application ("the Application").&#xA;
+        (i) Incident Reporting Application a stores user credentials namely the email, names,
+    contact for better user experience.&#xA;
+(ii) This application also keeps track of the user reports submitted storing the image(s) path(s), video path
+    also other text input entries.&#xA;
+(iii) This application takes a back up of the user video supplied in the email attachment.&#xA;
+(iv) The application request the read and write permissions of the external storage.&#xA;
+(v) No image data is stored by the application.&#xA;
+(vi) Whiz Studios is not responsible and does not keep track of any modifications done by the user
+    on the mail body outside the application and also not responsible for the information submitted.&#xA;
+(vii) The user should note that the supplied information goes to the gmail account of Uganda Police.&#xA;
+(viii) The user whom supplied a report may or may not be contacted by police for further investigations.&#xA;
+(ix) User backed information may be used by police on request.&#xA;
+    By counting to use the application, means that the user agrees to the above terms.&#xA;
+    For a crime free Uganda.
+    </string>
     <string name="user_policy">
         User Policy of the Incident Reporting Application:
-
-The User Policy outlines the guidelines and rules that users of the Incident Reporting Application ("the Application") must adhere to.
-        By using the Application, you agree to comply with and be bound by this User Policy.
-        Failure to comply may result in suspension or termination of your access to the Application.
-
-Appropriate Use:
-a. Users must use the Application responsibly and solely for the purpose of reporting incidents accurately and in good faith.
-b. Users shall not submit false or malicious reports, engage in any fraudulent activities, or misuse the Application for any unlawful or prohibited purposes.
-
-Reporting Incidents:
-a. Users are responsible for providing accurate and complete information when reporting incidents through the Application.
-b. Users understand that submitted incident reports will be stored, analyzed, and shared with relevant authorities for investigation and resolution purposes.
-
-Respectful and Lawful Conduct:
-a. Users shall not use the Application to engage in any form of harassment, hate speech, discrimination, or any activity that violates applicable laws or infringes upon the rights of others.
-b. Users must respect the privacy and confidentiality of others and shall not disclose personal information or sensitive data in incident reports or any public forums within the Application.
-
-Compliance with Legal Obligations:
-a. Users must comply with all applicable laws, regulations, and legal obligations when using the Application.
-b. Users shall not engage in any activities that may disrupt or impair the functionality of the Application or compromise the security and privacy of other users` data.
-
-Intellectual Property:
-a. Users shall respect the intellectual property rights of the Application's developers and shall not reproduce, modify, distribute, or exploit any part of the Application without prior written permission from the rightful owners.
-
-Privacy and Data Protection:
-a. Users' personal information collected through the Application will be handled in accordance with the Application's Privacy Policy.
-b. Users must not attempt to access, modify, or disclose other users' personal information without proper authorization.
-
-User Conduct and Interactions:
-a. Users are solely responsible for their conduct and interactions within the Application.
-b. Users shall treat others with respect and shall not engage in any form of harassment, abusive behavior, or unauthorized solicitation.
-
-Suspension and Termination:
-a. The developers of the Application reserve the right to suspend or terminate user access to the Application in cases of non-compliance with this User Policy or for any other reason deemed necessary.
-
-Modification of User Policy:
-a. The developers of the Application may modify or update this User Policy at any time without prior notice. Users are responsible for reviewing the User Policy periodically for any changes.
-b. Continued use of the Application after modifications to the User Policy indicates acceptance of the revised terms.
-
-By using the Incident Reporting Application, you acknowledge that you have read, understood, and agreed to this User Policy. Non-compliance with any provision of this User Policy may result in penalties, including but not limited to suspension or termination of user access to the Application.
 </string>
     <string name="view_terms">Check box to accept the terms of using this application. Click here to view terms.</string>
 </resources>

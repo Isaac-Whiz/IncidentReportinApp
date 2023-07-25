@@ -3,6 +3,8 @@ package com.example.incidentreportingapp;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +13,20 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ImagePagerAdapter extends PagerAdapter {
     private Context context;
-    private List<String> imagePaths;
+    public static ArrayList<String> imagePaths;
 
-    public ImagePagerAdapter(Context context, List<String> imagePaths) {
+    public ImagePagerAdapter(Context context, ArrayList<String> imagePaths) {
         this.context = context;
         this.imagePaths = imagePaths;
+    }
+
+    public ImagePagerAdapter() {
     }
 
     @NonNull
@@ -52,4 +59,7 @@ public class ImagePagerAdapter extends PagerAdapter {
         container.removeView((View) object);
     }
 
+    public  View getView(int position) {
+        return (View) instantiateItem(null, position);
+    }
 }
