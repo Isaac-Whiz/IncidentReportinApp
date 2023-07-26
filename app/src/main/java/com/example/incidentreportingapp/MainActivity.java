@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
     private Button btnAddVideoMain, btnRemoveImages, btnRemoveVideo;
     private Uri videoUri;
     private ProgressBar progressBar;
-    private RelativeLayout parentLayout;
     private static final int REQUEST_PICK_VIDEO = 1;
     private static final int REQUEST_VIDEO_CAPTURE = 2;
 
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         handleNavigationViewEvents();
         handleButtonEvents();
         addVideoMain();
-        removeImages(ImagePagerAdapter.imagePaths);
+        removeImages();
     }
 
     private void sendEmailWithAttachments(String recipientEmail, String subject, String body, ArrayList<String> imagePaths) {
@@ -164,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
     private void handleNavigationViewEvents() {
-//        validateAuthor();
+        validateAuthor();
         navigationView.setNavigationItemSelectedListener(item -> {
             if (item.getItemId() == R.id.userPolicy) {
                 startActivity(new Intent(MainActivity.this, UserPolicyActivity.class)
@@ -207,11 +206,25 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             backupVideoAndSendMail();
+            //clearViews();
         });
         btnRemoveVideo.setOnClickListener(view -> {
             removeVideo();
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        clearViews();
+    }
+
+    private void clearViews() {
+        editCategory.setText(null);
+        editDescription.setText(null);
+        editLocation.setText(null);
+    }
+
     private void composeTextualDataBackupAndSendMail(){
         String recipient = "ssekajjawavamunoisaac@gmail.com";
         String subject = "Information regarding reporting an incident.";
@@ -247,19 +260,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    private void createPdf() throws IOException, DocumentException {
-//        String pdfPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-//        File file = new File(pdfPath, "report.pdf");
-//        OutputStream outputStream = new FileOutputStream(file);
-//        Document document = new Document();
-//
-//
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//            PdfWriter writer = PdfWriter.getInstance(document, Files.newOutputStream(Paths.get(pdfPath)));
-//            document = new Document(writer)
-//        }
-//
-//    }
     private String getCurrentDateAndTime(){
         Date date =  new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
         btnAddVideoMain = findViewById(R.id.btnAddVideoMain);
         btnRemoveImages = findViewById(R.id.btnRemoveImages);
         btnRemoveVideo = findViewById(R.id.btnRemoveVideoMain);
-        parentLayout = findViewById(R.id.parentLayout);
+        RelativeLayout parentLayout = findViewById(R.id.parentLayout);
 
     }
     private void removeVideo() {
@@ -329,49 +329,12 @@ public class MainActivity extends AppCompatActivity {
             videoViewMain.setVisibility(View.INVISIBLE);
         }
     }
-    private void removeImages(ArrayList<String> pathsToRemove){
+    private void removeImages(){
         btnRemoveImages.setOnClickListener(view -> {
-//            if (viewPager != null && viewPager.getAdapter() != null){
-//                PagerAdapter adapter = viewPager.getAdapter();
-//                int count = adapter.getCount();
-//
-//                for (int i = count - 1; i >= 0; i--){
-//                    View viewView = viewPager.getChildAt(i);
-//                    if (viewView instanceof ImageView){
-//                        viewPager.removeView(viewView);
-//                    }
-//                }
-//                adapter.notifyDataSetChanged();
-//            }
-//            imagePaths = new ArrayList<>();
-//            imagePaths.clear();
-//            viewPager.setVisibility(View.INVISIBLE);
-//            viewPager.removeAllViews();
-//            ImagePagerAdapter.imagePaths.clear();
-////            imagePaths.clear();
-//            pagerAdapter.notifyDataSetChanged();
-            if (pathsToRemove != null && !pathsToRemove.isEmpty()) {
-                List<Integer> positionsToRemove = new ArrayList<>();
-
-                // Find the positions of images to remove
-                for (int i = 0; i < imagePaths.size(); i++) {
-                    if (pathsToRemove.contains(imagePaths.get(i))) {
-                        positionsToRemove.add(i);
-                    }
-                }
-
-                // Sort positionsToRemove in descending order to remove items safely
-                Collections.sort(positionsToRemove, Collections.reverseOrder());
-
-                for (int position : positionsToRemove) {
-                    if (position >= 0 && position < imagePaths.size()) {
-                        ImagePagerAdapter remove = new ImagePagerAdapter();
-                        imagePaths.remove(position);
-                    }
-                }
-//                viewPager.removeAllViews();
-                pagerAdapter.notifyDataSetChanged();
-            }
+            ArrayList<String> newImageUrls = new ArrayList<>();
+            imagePaths = newImageUrls;
+            ImagePagerAdapter.imagePaths = newImageUrls;
+            viewPager.setAdapter(pagerAdapter);
         });
     }
     private void handleMediaController(){

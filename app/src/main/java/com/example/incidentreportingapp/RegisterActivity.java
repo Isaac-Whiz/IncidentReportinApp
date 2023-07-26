@@ -30,7 +30,6 @@ public class RegisterActivity extends AppCompatActivity {
     private CheckBox checkBox;
     private FirebaseAuth auth;
     private TextView txtViewTerms;
-    private static final String PHONE_NUMBER = "999";
     private static final int REQUEST_CALL_PERMISSION = 1;
 
     private boolean isPasswordVisible;
@@ -64,15 +63,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
-
-    private void startCall(Intent intent) {
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        } else {
-            Toast.makeText(this, "No phone application found.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private void handleEvents() {
         btnRegister.setOnClickListener(view -> {
             int limit = 6;

@@ -37,21 +37,21 @@ public class LoginActivity extends AppCompatActivity {
 
     private void handleEvents() {
         btnLogin.setOnClickListener(view -> {
-//            String mail = editLoginEmail.getText().toString();
-//            String pass = editLoginPassword.getText().toString();
-//            if (mail.endsWith("com") || mail.contains("@")) {
-//                Toast.makeText(this, "Enter valid email please.", Toast.LENGTH_SHORT).show();
-//                editLoginEmail.requestFocus();
-//            }
-//            if (TextUtils.isEmpty(mail) || TextUtils.isEmpty(pass))
-//                Toast.makeText(LoginActivity.this, "Enter mail or password.", Toast.LENGTH_SHORT).show();
-//            else {
-//                activeUser = mail;
-//                login(mail, pass);
-//            }
-            startActivity(new Intent(LoginActivity.this, MainActivity.class)
-                    .putExtra("Author", editLoginEmail.getText().toString())
-                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK));
+            String mail = editLoginEmail.getText().toString();
+            String pass = editLoginPassword.getText().toString();
+            if (mail.endsWith("com") || mail.contains("@")) {
+                Toast.makeText(this, "Enter valid email please.", Toast.LENGTH_SHORT).show();
+                editLoginEmail.requestFocus();
+            }
+            if (TextUtils.isEmpty(mail) || TextUtils.isEmpty(pass))
+                Toast.makeText(LoginActivity.this, "Enter mail or password.", Toast.LENGTH_SHORT).show();
+            else {
+                activeUser = mail;
+                login(mail, pass);
+            }
+//            startActivity(new Intent(LoginActivity.this, MainActivity.class)
+//                    .putExtra("Author", editLoginEmail.getText().toString())
+//                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK));
         });
 
         editLoginPassword.setOnTouchListener(new View.OnTouchListener() {

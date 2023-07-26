@@ -14,7 +14,8 @@
             android:textAllCaps="false"
             android:textStyle="normal"
             android:textAlignment="textStart"
-            android:textSize="25dp"
+            android:textSize="20dp"
+            android:padding="5dp"
             android:textColor="@color/black"
             android:text="@string/terms"/>
     </ScrollView>

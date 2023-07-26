@@ -1,6 +1,7 @@
 package com.example.incidentreportingapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Report extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -48,7 +51,67 @@ public class Report extends AppCompatActivity {
     }
     private void retrieveData(){
         ReportedData reportedData = new ReportedData();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Report backups");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Report backups");
+//        databaseReference.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                reportedDataArrayList.clear();
+//                for (DataSnapshot entrySnapshot : snapshot.getChildren()){
+////                    String author = Objects.requireNonNull(entrySnapshot.child("author").getValue()).toString();
+////                    String category = Objects.requireNonNull(entrySnapshot.child("category").getValue()).toString();
+////                    String time = Objects.requireNonNull(entrySnapshot.child("currentTimeAndDate").getValue()).toString();
+////                    String description = Objects.requireNonNull(entrySnapshot.child("description").getValue()).toString();
+////                    String imagePaths = Objects.requireNonNull(entrySnapshot.child("imagePaths").getValue()).toString();
+////                    String location = Objects.requireNonNull(entrySnapshot.child("location").getValue()).toString();
+////                    String videoUrl = Objects.requireNonNull(entrySnapshot.child("videoUrl").getValue()).toString();
+//
+//String author = entrySnapshot.child("author").getValue(String.class);
+//                    String category = entrySnapshot.child("category").getValue(String.class);
+//                    String time = entrySnapshot.child("currentTimeAndDate").getValue(String.class);
+//                    String description = entrySnapshot.child("description").getValue(String.class);
+//                    String imagePaths = entrySnapshot.child("imagePaths").getValue(String.class);
+//                    String location = entrySnapshot.child("location").getValue(String.class);
+//                    String videoUrl = entrySnapshot.child("videoUrl").getValue(String.class);
+//
+//
+//
+//                    reportedData.setAuthor(author);
+//                    reportedData.setCategory(category);
+//                    reportedData.setCurrentTimeAndDate(time);
+//                    reportedData.setDescription(description);
+//                    reportedData.setImagePaths(imagePaths);
+//                    reportedData.setLocation(location);
+//                    reportedData.setVideoUrl(videoUrl);
+//
+//                    reportedDataArrayList.add(reportedData);
+//                }
+//                reportAdapter.setReports(reportedDataArrayList);
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+
+
+
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

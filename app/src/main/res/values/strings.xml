@@ -16,24 +16,52 @@
     <string name="title_activity_terms">Terms_Activity</string>
     <string name="MAP_API_KEY">AIzaSyDtwI2crDNZUEfNhLT8qR055IhSyOJn98M</string>
     <string name="terms">
-        Please read the following User Terms and Conditions ("Terms") carefully before using the Incident Reporting Application ("the Application").&#xA;
+        Please read the following User Terms and Conditions ("Terms") carefully before using the Incident Reporting Application ("the Application").&#xA;\n\n
         (i) Incident Reporting Application a stores user credentials namely the email, names,
-    contact for better user experience.&#xA;
+    contact for better user experience.&#xA; \n\n
+
 (ii) This application also keeps track of the user reports submitted storing the image(s) path(s), video path
-    also other text input entries.&#xA;
-(iii) This application takes a back up of the user video supplied in the email attachment.&#xA;
-(iv) The application request the read and write permissions of the external storage.&#xA;
-(v) No image data is stored by the application.&#xA;
+    also other text input entries.&#xA;\n\n
+
+(iii) This application takes a back up of the user video supplied in the email attachment.&#xA;\n\n
+
+(iv) The application request the read and write permissions of the external storage.&#xA;\n\n
+
+(v) No image data is stored by the application.&#xA;\n\n
+
 (vi) Whiz Studios is not responsible and does not keep track of any modifications done by the user
-    on the mail body outside the application and also not responsible for the information submitted.&#xA;
-(vii) The user should note that the supplied information goes to the gmail account of Uganda Police.&#xA;
-(viii) The user whom supplied a report may or may not be contacted by police for further investigations.&#xA;
-(ix) User backed information may be used by police on request.&#xA;
-    By counting to use the application, means that the user agrees to the above terms.&#xA;
+    on the mail body outside the application and also not responsible for the information submitted.&#xA;\n\n
+
+(vii) The user should note that the supplied information goes to the gmail account of Uganda Police.&#xA;\n\n
+
+(viii) The user whom supplied a report may or may not be contacted by police for further investigations.&#xA;\n\n
+
+(ix) User backed information may be used by police on request.&#xA;\n\n
+
+    By counting to use the application, means that the user agrees to the above terms.&#xA;\n\n
+
     For a crime free Uganda.
     </string>
     <string name="user_policy">
-        User Policy of the Incident Reporting Application:
+        User Policy of the Incident Reporting Application:&#xA;\n\n
+
+        Privacy Policy: User information is kept secret from third party access and secure however
+        it could be share to the police on request for further investigations.&#xA;\n\n
+
+Incident Reporting Guidelines: Pornographic,
+        obscene and other offensive content is highly prohibited and if used could lead to a legal action.&#xA;\n\n
+
+Non-Retaliation Policy: This ensures that users can report incidents without fear of
+        retaliation and users should report information in good faith without any bias.&#xA;\n\n
+
+Confidentiality Policy: Collected information from the users specifically the video, names, location, and the email, are kept secure in a remote storage
+        and only the information relating to incidents could be shared on request for further investigations.&#xA;\n\n
+
+User Conduct Policy: As stated already that abuse of the user policy could call for legal actions in case the user submits misleading information,
+        pornographic or any other form of inhumane information.&#xA;\n\n
+
+Response and Resolution Policy: The developers of this application are not responsible for the responses you receive after sending the information to the police.&#xA;
+Data Retention Policy: Data back-ups are stored for a given time 2-4 years for a better experience.&#xA;\n\n
 </string>
     <string name="view_terms">Check box to accept the terms of using this application. Click here to view terms.</string>
 </resources>

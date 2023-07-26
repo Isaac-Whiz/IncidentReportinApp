@@ -52,25 +52,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-//        mMap = googleMap;
-//
-//        // Check if location permission is granted, and request it if not
-//        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-//            return;
-//        }
-//
-//        // Enable the My Location layer and zoom to the current location
-////        mMap.setMyLocationEnabled(true);
-//        fusedLocationClient.getLastLocation()
-//                .addOnSuccessListener(getActivity(), location -> {
-//                    if (location != null) {
-//                        LatLng currentLatLng = new LatLng(1.373333, 32.290275);
-//                        currentLocationMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title("Current Location"));
-//                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
-//                        txtCordinates.setText("Current Location: " + currentLatLng.latitude + ", " + currentLatLng.longitude);
-//                    }
-//                });
+        mMap = googleMap;
+
+        // Check if location permission is granted, and request it if not
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+            return;
+        }
+
+        // Enable the My Location layer and zoom to the current location
+//        mMap.setMyLocationEnabled(true);
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(getActivity(), location -> {
+                    if (location != null) {
+                        LatLng currentLatLng = new LatLng(1.373333, 32.290275);
+                        currentLocationMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title("Current Location"));
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
+                        txtCordinates.setText("Current Location: " + currentLatLng.latitude + ", " + currentLatLng.longitude);
+                    }
+                });
 
     }
     public void setLocationPermissionGranted() {
