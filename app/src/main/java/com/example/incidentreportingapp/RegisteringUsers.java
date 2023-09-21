@@ -5,13 +5,6 @@ import java.util.Objects;
 public class RegisteringUsers {
     private String fName, lName, contact, email;
 
-    public RegisteringUsers(String fName, String lName, String contact, String email) {
-        this.fName = fName;
-        this.lName = lName;
-        this.contact = contact;
-        this.email = email;
-    }
-
     @Override
     public String toString() {
         return "RegisteringUsers{" +
@@ -38,32 +31,16 @@ public class RegisteringUsers {
         return Objects.hash(fName, lName, contact, email);
     }
 
-    public String getfName() {
-        return fName;
-    }
-
     public void setfName(String fName) {
         this.fName = fName;
-    }
-
-    public String getlName() {
-        return lName;
     }
 
     public void setlName(String lName) {
         this.lName = lName;
     }
 
-    public String getContact() {
-        return contact;
-    }
-
     public void setContact(String contact) {
         this.contact = contact;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public void setEmail(String email) {

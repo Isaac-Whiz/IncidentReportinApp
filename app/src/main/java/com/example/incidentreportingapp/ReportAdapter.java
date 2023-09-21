@@ -1,6 +1,5 @@
 package com.example.incidentreportingapp;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,24 +8,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 
 public class ReportAdapter extends RecyclerView.Adapter<ViewHolder>{
     private ArrayList<ReportedData> reportedData = new ArrayList<>();
-
-//    public ReportAdapter( ArrayList<ReportedData> reportedData) {
-//        this.reportedData = reportedData;
-//    }
-
-    public void upDateData(ArrayList<ReportedData> newData){
-        reportedData.clear();
-        reportedData.addAll(newData);
-        notifyDataSetChanged();
-    }
 
     @NonNull
     @Override

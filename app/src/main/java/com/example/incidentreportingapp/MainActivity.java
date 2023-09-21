@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
@@ -38,6 +39,13 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
@@ -69,20 +77,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private MaterialToolbar toolbar;
-    private Button btnChooseImages, btnSend;
+    private Button btnChooseImages, btnSend, btnLocateMe;
     private static final int REQUEST_PERMISSION = 1;
     private static final int REQUEST_PICK_IMAGE = 2;
     private static final int REQUEST_CAMERA = 3;
+    private MapView mapView;
+    private GoogleMap googleMap;
+    private FusedLocationProviderClient fusedLocationProviderClient;
     private ViewPager viewPager;
     private ImagePagerAdapter pagerAdapter;
     private ArrayList<String> imagePaths;
     private FragmentTransaction fragmentTransaction;
     private FirebaseAuth auth;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private EditText editDescription, editLocation, editCategory;
     public DatabaseReference databaseReference;
     private StorageReference storageReference;
@@ -96,11 +107,15 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private static final int REQUEST_PICK_VIDEO = 1;
     private static final int REQUEST_VIDEO_CAPTURE = 2;
+    private String author;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mapView = findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
         initViews();
 
         handleToggleEvents();
@@ -136,13 +151,6 @@ public class MainActivity extends AppCompatActivity {
 
     startActivity(Intent.createChooser(intent, "Send Email"));
 }
-    private void initializeMapFragment() {
-        MapFragment mapFragment = new MapFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.mapFrameLayout, mapFragment)
-                .commit();
-    }
 
     private void handleToggleEvents() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open_drawer, R.string.drawer_closed);
@@ -150,9 +158,51 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Intent intent = getIntent();
+        author = intent.getStringExtra("Author");
+        mapView.onPause();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        Intent intent = getIntent();
+        author = intent.getStringExtra("Author");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    private void loadCurrentLocation() {
+        if (googleMap != null) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                googleMap.setMyLocationEnabled(true);
+                fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, location -> {
+                    if (location != null) {
+                        LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
+                    }
+                });
+            }
+        }
+    }
+
+
     private void validateAuthor(){
         Intent intent = getIntent();
-        String author = intent.getStringExtra("Author");
+        author = intent.getStringExtra("Author");
         Menu menu = navigationView.getMenu();
         MenuItem menuItem = menu.findItem(R.id.reports);
         if (author.equals("ssekajjawavamuno@gmail.com") || author.equals("ssekajjawavamunoisaac@gmail.com")){
@@ -167,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(item -> {
             if (item.getItemId() == R.id.userPolicy) {
                 startActivity(new Intent(MainActivity.this, UserPolicyActivity.class)
+                        .putExtra("Author", author)
                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 
             } else if (item.getItemId() == R.id.terms) {
@@ -190,6 +241,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleButtonEvents() {
+        btnLocateMe.setOnClickListener(view -> {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+            } else {
+                Toast.makeText(this, "Location permission already granted.", Toast.LENGTH_SHORT).show();
+
+            }
+        });
         btnChooseImages.setOnClickListener(view -> {
             pagerAdapter.notifyDataSetChanged();
             checkPermissionsAndOpenGallery();
@@ -217,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         clearViews();
+        mapView.onResume();
     }
 
     private void clearViews() {
@@ -227,6 +287,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void composeTextualDataBackupAndSendMail(){
         String recipient = "ssekajjawavamunoisaac@gmail.com";
+//        String recipient = "info@upf.go.ug";
         String subject = "Information regarding reporting an incident.";
         String location = editLocation.getText().toString();
         String description = editDescription.getText().toString();
@@ -271,18 +332,9 @@ public class MainActivity extends AppCompatActivity {
         requestCamera();
         checkGalleryPermissions();
         requestGallery();
-        checkAndRequestLocationPermission();
 
     }
-
-    private void checkAndRequestLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-        }
-        initializeMapFragment();
-    }
-
-    private boolean checkGalleryPermissions() {
+        private boolean checkGalleryPermissions() {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED;
     }
@@ -319,11 +371,13 @@ public class MainActivity extends AppCompatActivity {
         btnAddVideoMain = findViewById(R.id.btnAddVideoMain);
         btnRemoveImages = findViewById(R.id.btnRemoveImages);
         btnRemoveVideo = findViewById(R.id.btnRemoveVideoMain);
-        RelativeLayout parentLayout = findViewById(R.id.parentLayout);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        btnLocateMe = findViewById(R.id.btnLocateMe);
 
     }
     private void removeVideo() {
         if (videoViewMain != null) {
+            progressBar.setVisibility(View.INVISIBLE);
             videoViewMain.stopPlayback();
             videoViewMain.setVideoURI(null);
             videoViewMain.setVisibility(View.INVISIBLE);
@@ -343,7 +397,7 @@ public class MainActivity extends AppCompatActivity {
         mediaControllerMain.setAnchorView(videoViewMain);
         videoViewMain.setOnPreparedListener(mediaPlayer -> videoViewMain.pause());
     }
-    private void addVideoMain(){
+    private void addVideoMain() {
         handleMediaController();
         btnAddVideoMain.setOnClickListener(view -> {
             videoViewMain.setVisibility(View.VISIBLE);
@@ -361,38 +415,52 @@ public class MainActivity extends AppCompatActivity {
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
-    private void backupVideoAndSendMail(){
-        if (videoViewMain.getVisibility() == View.INVISIBLE){
+
+    private void backupVideoAndSendMail() {
+        if (videoViewMain.getVisibility() == View.INVISIBLE) {
             composeTextualDataBackupAndSendMail();
         } else {
             if (videoUri != null) {
-                storageReference.child(System.currentTimeMillis() + "." + getExt(videoUri));
-                uploadTask = storageReference.putFile(videoUri);
+                // Generate a unique filename for the video
+                String filename = System.currentTimeMillis() + "." + getExt(videoUri);
+
+                // Create a reference to the "Videos" path with the unique filename
+                StorageReference videoReference = storageReference.child(filename);
+
+                uploadTask = videoReference.putFile(videoUri);
                 progressBar.setVisibility(View.VISIBLE);
 
                 Task<Uri> urlTask = uploadTask.continueWithTask(task -> {
-                            if (task.isSuccessful()) {
-                                return storageReference.getDownloadUrl();
-                            }
-                            throw task.getException();
-                        })
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Uri downloadUri = task.getResult();
-                                Toast.makeText(MainActivity.this, "Video Saved", Toast.LENGTH_SHORT).show();
-                                videoUrl = downloadUri.toString();
-//                            databaseReference.child("Video").push().setValue(videoUrl);
-                                progressBar.setVisibility(View.INVISIBLE);
-                                composeTextualDataBackupAndSendMail();
-                                recreate();
-                            } else {
-                                progressBar.setVisibility(View.INVISIBLE);
-                                composeTextualDataBackupAndSendMail();
-                                Toast.makeText(MainActivity.this, "Failed backing up video, check internet connection.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                    if (task.isSuccessful()) {
+                        return videoReference.getDownloadUrl();
+                    }
+                    throw task.getException();
+                }).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        Toast.makeText(MainActivity.this, "Video Saved", Toast.LENGTH_SHORT).show();
+                        videoUrl = downloadUri.toString();
+                        progressBar.setVisibility(View.INVISIBLE);
+                        composeTextualDataBackupAndSendMail();
+                        recreate();
+                    } else {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        composeTextualDataBackupAndSendMail();
+                        Toast.makeText(MainActivity.this, "Failed backing up video, check internet connection.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             } else {
                 composeTextualDataBackupAndSendMail();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                loadCurrentLocation();
             }
         }
     }
@@ -531,4 +599,14 @@ public class MainActivity extends AppCompatActivity {
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        this.googleMap = googleMap;
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        } else {
+            loadCurrentLocation();
+        }
+    }
 }

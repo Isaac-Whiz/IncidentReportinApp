@@ -30,7 +30,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private TextView txtCordinates;
     private FusedLocationProviderClient fusedLocationClient;
-    private Marker currentLocationMarker;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
 
@@ -60,13 +59,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             return;
         }
 
-        // Enable the My Location layer and zoom to the current location
-//        mMap.setMyLocationEnabled(true);
+
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(getActivity(), location -> {
                     if (location != null) {
                         LatLng currentLatLng = new LatLng(1.373333, 32.290275);
-                        currentLocationMarker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title("Current Location"));
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
                         txtCordinates.setText("Current Location: " + currentLatLng.latitude + ", " + currentLatLng.longitude);
                     }

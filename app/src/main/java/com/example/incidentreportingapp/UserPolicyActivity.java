@@ -16,7 +16,10 @@ public class UserPolicyActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(UserPolicyActivity.this, MainActivity.class)
+        Intent intent = getIntent();
+        String author = intent.getStringExtra("Author");
+        startActivity(new Intent(this, MainActivity.class)
+                .putExtra("Author", author)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
     }
 }

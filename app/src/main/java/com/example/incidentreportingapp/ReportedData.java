@@ -10,16 +10,6 @@ public class ReportedData {
     private String videoUrl;
 
 
-    public ReportedData(String author, String location, String category, String description, String imagePaths, String currentTimeAndDate, String videoUrl) {
-        this.author = author;
-        this.location = location;
-        this.category = category;
-        this.description = description;
-        this.imagePaths = imagePaths;
-        this.currentTimeAndDate = currentTimeAndDate;
-        this.videoUrl = videoUrl;
-    }
-
     public ReportedData() {
     }
 

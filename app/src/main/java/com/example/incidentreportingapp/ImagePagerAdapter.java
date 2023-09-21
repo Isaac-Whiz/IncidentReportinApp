@@ -1,10 +1,6 @@
 package com.example.incidentreportingapp;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +12,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ImagePagerAdapter extends PagerAdapter {
     private Context context;

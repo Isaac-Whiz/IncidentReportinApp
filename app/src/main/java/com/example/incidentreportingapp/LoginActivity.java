@@ -39,14 +39,14 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(view -> {
             String mail = editLoginEmail.getText().toString();
             String pass = editLoginPassword.getText().toString();
-            if (mail.endsWith("com") || mail.contains("@")) {
+            activeUser = mail;
+            if (!mail.endsWith("com") || !mail.contains("@")) {
                 Toast.makeText(this, "Enter valid email please.", Toast.LENGTH_SHORT).show();
                 editLoginEmail.requestFocus();
             }
             if (TextUtils.isEmpty(mail) || TextUtils.isEmpty(pass))
                 Toast.makeText(LoginActivity.this, "Enter mail or password.", Toast.LENGTH_SHORT).show();
             else {
-                activeUser = mail;
                 login(mail, pass);
             }
 //            startActivity(new Intent(LoginActivity.this, MainActivity.class)
@@ -92,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
             auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
                 Toast.makeText(LoginActivity.this, "Login successful.", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class)
+                        .putExtra("Author", activeUser)
                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK));
             });
         } else {
@@ -117,9 +118,6 @@ public class LoginActivity extends AppCompatActivity {
     private void clearViews() {
         editLoginEmail.setText("");
         editLoginPassword.setText("");
-    }
-    public String getActiveUser() {
-        return activeUser;
     }
 
 }
