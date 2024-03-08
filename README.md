@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-<img src="https://github.com/Isaac-Whiz/SDA_Nyimba/assets/95527627/d5cfb6a5-b575-44d0-9e9a-747f4160cc1e" alt="SDA Nyimba" width="200">
+<img src="https://github.com/Isaac-Whiz/IncidentReportinApp/assets/95527627/39c42387-fb90-4892-a052-d34e6921f983" alt="Incident Reporting Application Icon" width="200">
   </p>
 </h1>
 
