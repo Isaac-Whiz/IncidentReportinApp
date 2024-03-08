@@ -35,7 +35,7 @@ When people come together to address issues that affect their lives, it strength
   <li>This application is installable on devices from Android version 4.4 +</li>
 </ul>
 <h2>Installation. 🔽</h2>
-The application is installable through downloading the apk from <a href="https://docs.google.com/uc?export=download&id=1WqLibCmqPFodCXRjWtDaTU-ECw6_khoT">Incident Reporting App.apk</a> the follow the steps to install.
+The application is installable through downloading the apk from <a href="https://drive.google.com/drive/folders/1Ysum05GcZrFBslqRwfbKxxdenv-C724z?usp=sharing">Incident Reporting App.apk</a> the follow the steps to install.
 
 <h4>Note: ⚠</h4> Whiz Studios as the author of this application is not responsible for the information submitted using this app, no user data shall be edited or passed through any form of manipulation and you highly encoraged to read the user agreement before accepting.
 
