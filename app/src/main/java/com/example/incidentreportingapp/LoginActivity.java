@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -40,18 +38,16 @@ public class LoginActivity extends AppCompatActivity {
             String mail = editLoginEmail.getText().toString();
             String pass = editLoginPassword.getText().toString();
             activeUser = mail;
-            if (!mail.endsWith("com") || !mail.contains("@")) {
-                Toast.makeText(this, "Enter valid email please.", Toast.LENGTH_SHORT).show();
-                editLoginEmail.requestFocus();
-            }
-            if (TextUtils.isEmpty(mail) || TextUtils.isEmpty(pass))
+            if (!TextUtils.isEmpty(mail) && !TextUtils.isEmpty(pass)) {
+                if (!Utils.isValidEmail(mail)) {
+                    Toast.makeText(this, "Enter valid email please.", Toast.LENGTH_SHORT).show();
+                    editLoginEmail.requestFocus();
+                } else {
+                    login(mail, pass);
+                }
+            } else {
                 Toast.makeText(LoginActivity.this, "Enter mail or password.", Toast.LENGTH_SHORT).show();
-            else {
-                login(mail, pass);
             }
-//            startActivity(new Intent(LoginActivity.this, MainActivity.class)
-//                    .putExtra("Author", editLoginEmail.getText().toString())
-//                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK));
         });
 
         editLoginPassword.setOnTouchListener(new View.OnTouchListener() {
@@ -88,12 +84,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login(String email, String password) {
 
-        if (CommonMethods.isNetworkAvailable(getApplicationContext())) {
+        if (Utils.isNetworkAvailable(getApplicationContext())) {
             auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
                 Toast.makeText(LoginActivity.this, "Login successful.", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class)
                         .putExtra("Author", activeUser)
                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK));
+            }).addOnFailureListener(authResult -> {
+                Toast.makeText(this, "Login failed, check inputs and try again.", Toast.LENGTH_SHORT).show();
             });
         } else {
             Toast.makeText(this, "Please enable internet connection.", Toast.LENGTH_SHORT).show();

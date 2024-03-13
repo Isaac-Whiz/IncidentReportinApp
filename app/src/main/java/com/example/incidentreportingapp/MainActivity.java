@@ -7,9 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
@@ -18,24 +16,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -50,31 +42,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfDocument;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -127,30 +106,30 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void sendEmailWithAttachments(String recipientEmail, String subject, String body, ArrayList<String> imagePaths) {
-    Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-    intent.setType("message/rfc822");
-    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{recipientEmail});
-    intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-    intent.putExtra(Intent.EXTRA_TEXT, body);
-    intent.setPackage("com.google.android.gm");
+        Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+        intent.setType("message/rfc822");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{recipientEmail});
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+        intent.setPackage("com.google.android.gm");
 
-    ArrayList<Uri> attachmentUris = new ArrayList<>();
+        ArrayList<Uri> attachmentUris = new ArrayList<>();
 
-    // Attach images
-    if (imagePaths != null && !imagePaths.isEmpty()) {
-        for (String imagePath : imagePaths) {
-            File imageFile = new File(imagePath);
-            Uri imageUri = FileProvider.getUriForFile(this, this.getPackageName() + ".provider", imageFile);
-            attachmentUris.add(imageUri);
+        // Attach images
+        if (imagePaths != null && !imagePaths.isEmpty()) {
+            for (String imagePath : imagePaths) {
+                File imageFile = new File(imagePath);
+                Uri imageUri = FileProvider.getUriForFile(this, this.getPackageName() + ".provider", imageFile);
+                attachmentUris.add(imageUri);
+            }
         }
-    }
 
-    if (!attachmentUris.isEmpty()) {
-        intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachmentUris);
-    }
+        if (!attachmentUris.isEmpty()) {
+            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachmentUris);
+        }
 
-    startActivity(Intent.createChooser(intent, "Send Email"));
-}
+        startActivity(Intent.createChooser(intent, "Send Email"));
+    }
 
     private void handleToggleEvents() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open_drawer, R.string.drawer_closed);
@@ -200,18 +179,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    private void validateAuthor(){
+    private void validateAuthor() {
         Intent intent = getIntent();
         author = intent.getStringExtra("Author");
         Menu menu = navigationView.getMenu();
         MenuItem menuItem = menu.findItem(R.id.reports);
-        if (author.equals("ssekajjawavamuno@gmail.com") || author.equals("ssekajjawavamunoisaac@gmail.com")){
-            menuItem.setVisible(true);
+        if (author != null) {
+            if (author.equals(Utils.ADMIN1) || author.equals(Utils.ADMIN2)) {
+                menuItem.setVisible(true);
+            }
         } else {
             menuItem.setVisible(false);
         }
         invalidateOptionsMenu();
     }
+
     private void handleNavigationViewEvents() {
         validateAuthor();
         navigationView.setNavigationItemSelectedListener(item -> {
@@ -227,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             } else if (item.getItemId() == R.id.aboutUs) {
                 startActivity(new Intent(Intent.ACTION_VIEW)
                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        .setData(Uri.parse("https://github.com/Isaac-Whiz")));
+                        .setData(Uri.parse(Utils.GITHUB_URL)));
             } else if (item.getItemId() == R.id.reports) {
                 startActivity(new Intent(MainActivity.this, Report.class)
                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -244,11 +226,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         btnLocateMe.setOnClickListener(view -> {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-            } else {
-                Toast.makeText(this, "Location permission already granted.", Toast.LENGTH_SHORT).show();
-
             }
         });
+
         btnChooseImages.setOnClickListener(view -> {
             pagerAdapter.notifyDataSetChanged();
             checkPermissionsAndOpenGallery();
@@ -260,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
         btnSend.setOnClickListener(view -> {
-            if (!CommonMethods.isNetworkAvailable(getApplicationContext())) {
+            if (!Utils.isNetworkAvailable(getApplicationContext())) {
                 Toast.makeText(this, "Please enable internet connection.", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -285,9 +265,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         editLocation.setText(null);
     }
 
-    private void composeTextualDataBackupAndSendMail(){
-        String recipient = "ssekajjawavamunoisaac@gmail.com";
-//        String recipient = "info@upf.go.ug";
+    private void composeTextualDataBackupAndSendMail() {
+        String recipient = "info@upf.go.ug";
         String subject = "Information regarding reporting an incident.";
         String location = editLocation.getText().toString();
         String description = editDescription.getText().toString();
@@ -302,7 +281,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 + description + "\n" + "Video Url: " + videoUrl;
         sendEmailWithAttachments(recipient, subject, body, pagerAdapter.imagePaths);
     }
-    private void backupMetaData(){
+
+    private void backupMetaData() {
         Intent intent = getIntent();
         String author = intent.getStringExtra("Author");
         String location = editLocation.getText().toString();
@@ -321,8 +301,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private String getCurrentDateAndTime(){
-        Date date =  new Date();
+    private String getCurrentDateAndTime() {
+        Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         return dateFormat.format(date);
     }
@@ -334,7 +314,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         requestGallery();
 
     }
-        private boolean checkGalleryPermissions() {
+
+    private boolean checkGalleryPermissions() {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED;
     }
@@ -375,6 +356,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         btnLocateMe = findViewById(R.id.btnLocateMe);
 
     }
+
     private void removeVideo() {
         if (videoViewMain != null) {
             progressBar.setVisibility(View.INVISIBLE);
@@ -383,7 +365,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             videoViewMain.setVisibility(View.INVISIBLE);
         }
     }
-    private void removeImages(){
+
+    private void removeImages() {
         btnRemoveImages.setOnClickListener(view -> {
             ArrayList<String> newImageUrls = new ArrayList<>();
             imagePaths = newImageUrls;
@@ -391,12 +374,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             viewPager.setAdapter(pagerAdapter);
         });
     }
-    private void handleMediaController(){
+
+    private void handleMediaController() {
         mediaControllerMain = new MediaController(this);
         videoViewMain.setMediaController(mediaControllerMain);
         mediaControllerMain.setAnchorView(videoViewMain);
         videoViewMain.setOnPreparedListener(mediaPlayer -> videoViewMain.pause());
     }
+
     private void addVideoMain() {
         handleMediaController();
         btnAddVideoMain.setOnClickListener(view -> {
@@ -410,7 +395,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             return true;
         });
     }
-    private String getExt(Uri uri){
+
+    private String getExt(Uri uri) {
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
@@ -576,6 +562,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         return null;
     }
+
     public void pickVideoFromGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
         intent.setDataAndType(videoUri, "video/*");

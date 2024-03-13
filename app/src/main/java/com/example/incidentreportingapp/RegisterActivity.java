@@ -24,6 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RegisterActivity extends AppCompatActivity {
     private EditText editEmail, editPassword, editContact, editSecondName, editFirstName;
     private Button btnLogin, btnRegister, btnEmergency;
@@ -31,11 +34,8 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private TextView txtViewTerms;
     private static final int REQUEST_CALL_PERMISSION = 1;
-
     private boolean isPasswordVisible;
-    public String firstName, lastName, contact, email;
     private DatabaseReference databaseReference;
-    private RegisteringUsers registeringUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,20 @@ public class RegisterActivity extends AppCompatActivity {
         initViews();
         handleEvents();
         setBtnEmergency();
+    }
+    private void initViews() {
+        editFirstName = findViewById(R.id.editFirstName);
+        editSecondName = findViewById(R.id.editSecondName);
+        editContact = findViewById(R.id.editContact);
+        editEmail = findViewById(R.id.editEmail);
+        editPassword = findViewById(R.id.editPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+        btnRegister = findViewById(R.id.btnRegister);
+        auth = FirebaseAuth.getInstance();
+        checkBox = findViewById(R.id.checkbox);
+        txtViewTerms = findViewById(R.id.txtViewTerms);
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Registered User");
+        btnEmergency = findViewById(R.id.btnEmergency);
     }
 
     private void setBtnEmergency() {
@@ -57,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 } else {
-                    Toast.makeText(this, "No application to handle  intent", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "No application to complete the calling event", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -65,57 +79,15 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private void handleEvents() {
         btnRegister.setOnClickListener(view -> {
-            int limit = 6;
-            String validEmail = editEmail.getText().toString();
-            if (!validEmail.contains("@gmail") || !validEmail.endsWith(".com")) {
-                Toast.makeText(this, "Enter a valid email.", Toast.LENGTH_SHORT).show();
-                editEmail.setText(null);
-                editEmail.requestFocus();
-            }
-            if (!CommonMethods.isNetworkAvailable(getApplicationContext())) {
-                Toast.makeText(this, "Please enable internet connection.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (!checkBox.isChecked())
-                Toast.makeText(this, "Accept the terms first to continue.", Toast.LENGTH_SHORT).show();
-            String password = editPassword.getText().toString();
-            String fName = editFirstName.getText().toString();
-            String lName = editSecondName.getText().toString();
-            String validContact = editContact.getText().toString();
-            if (TextUtils.isEmpty(validEmail)
-                    || TextUtils.isEmpty(password)
-                    || TextUtils.isEmpty(validContact)
-                    || TextUtils.isEmpty(fName)
-                    || TextUtils.isEmpty(lName)) {
-                Toast.makeText(RegisterActivity.this, "Please fill all fields.", Toast.LENGTH_SHORT).show();
-            } else if (editPassword.length() < limit) {
-                Toast.makeText(RegisterActivity.this, "Enter 6 or more password characters.", Toast.LENGTH_SHORT).show();
-            } else {
-                firstName = fName;
-                lastName = lName;
-                contact = validContact;
-                email = validEmail;
-                registeringUser.setfName(firstName);
-                registeringUser.setlName(lastName);
-                registeringUser.setContact(contact);
-                registeringUser.setEmail(email);
-                databaseReference.push().setValue(registeringUser);
-                checkUserExistsAndRegister(email, password);
-            }
+            checkViewsNullityAndRegister();
         });
 
         btnLogin.setOnClickListener(view -> {
-            if (CommonMethods.isNetworkAvailable(getApplicationContext())) {
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class)
-                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
-            } else {
-                Toast.makeText(this, "Please enable internet connection.", Toast.LENGTH_SHORT).show();
-            }
+            navigateToLoginActivity();
         });
 
         txtViewTerms.setOnClickListener(view -> {
-            startActivity(new Intent(RegisterActivity.this, TermsActivity.class)
-                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+            navigateToTermsActivity();
         });
         editPassword.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -126,14 +98,11 @@ public class RegisterActivity extends AppCompatActivity {
                             .getCompoundDrawables()[right].getBounds().width()) {
                         int selection = editPassword.getSelectionEnd();
                         if (isPasswordVisible) {
-                            //Set invisibility drawable image
                             editPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,
                                     R.drawable.visible, 0);
-                            //Hide password
                             editPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                             isPasswordVisible = false;
                         } else {
-                            //Set visibility image
                             editPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,
                                     R.drawable.invisible, 0);
                             editPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -148,21 +117,61 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void initViews() {
-        editFirstName = findViewById(R.id.editFirstName);
-        editSecondName = findViewById(R.id.editSecondName);
-        editContact = findViewById(R.id.editContact);
-        editEmail = findViewById(R.id.editEmail);
-        editPassword = findViewById(R.id.editPassword);
-        btnLogin = findViewById(R.id.btnLogin);
-        btnRegister = findViewById(R.id.btnRegister);
-        auth = FirebaseAuth.getInstance();
-        checkBox = findViewById(R.id.checkbox);
-        txtViewTerms = findViewById(R.id.txtViewTerms);
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Registered User");
-        registeringUser = new RegisteringUsers();
-        btnEmergency = findViewById(R.id.btnEmergency);
+    private void checkViewsNullityAndRegister() {
+        if (isNetworkAvailable()) {
+            int limit = 6;
+            String email = editEmail.getText().toString();
+            if (TextUtils.isEmpty(email)) {
+                Toast.makeText(this, "Enter email.", Toast.LENGTH_SHORT).show();
+            } else {
+                if (!Utils.isValidEmail(email)) {
+                    Toast.makeText(this, "Enter valid email please.", Toast.LENGTH_SHORT).show();
+                    editEmail.requestFocus();
+                } else {
+                    if (checkBox.isChecked()) {
+                        String password = editPassword.getText().toString();
+                        String fName = editFirstName.getText().toString();
+                        String lName = editSecondName.getText().toString();
+                        String contact = editContact.getText().toString();
+                        if (TextUtils.isEmpty(password)
+                                || TextUtils.isEmpty(contact)
+                                || TextUtils.isEmpty(fName)
+                                || TextUtils.isEmpty(lName)) {
+                            Toast.makeText(RegisterActivity.this, "Please fill all fields.", Toast.LENGTH_SHORT).show();
+                        } else if (editPassword.length() < limit) {
+                            Toast.makeText(RegisterActivity.this, "Enter 6 or more password characters.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            databaseReference.push().setValue(new RegisteringUser(fName, lName, contact, email));
+                            checkUserExistsAndRegister(email, password);
+                        }
+                    } else {
+                        Toast.makeText(this, "Accept the terms first to continue.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        } else {
+            Toast.makeText(this, "Please enable internet connection.", Toast.LENGTH_SHORT).show();
+        }
     }
+
+    private void navigateToLoginActivity() {
+        if (Utils.isNetworkAvailable(getApplicationContext())) {
+            startActivity(new Intent(RegisterActivity.this, LoginActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+        } else {
+            Toast.makeText(this, "Please enable internet connection.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void navigateToTermsActivity() {
+        startActivity(new Intent(RegisterActivity.this, TermsActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+    }
+
+    private boolean isNetworkAvailable() {
+        return Utils.isNetworkAvailable(this);
+    }
+
 
 
     private void register(String txtEmail, String txtPassword) {
@@ -173,6 +182,7 @@ public class RegisterActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Toast.makeText(RegisterActivity.this, "Registration successful.", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(RegisterActivity.this, MainActivity.class)
+                                .putExtra("Author", txtEmail)
                                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                     } else {
                         Toast.makeText(RegisterActivity.this, "Registration failed.", Toast.LENGTH_SHORT).show();
@@ -180,22 +190,17 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
-    // Function to check if user exists
     private void checkUserExistsAndRegister(String email, String password) {
         auth.fetchSignInMethodsForEmail(email)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         if (task.getResult() != null && task.getResult().getSignInMethods() != null
                                 && task.getResult().getSignInMethods().size() > 0) {
-                            // User already exists
                             Toast.makeText(RegisterActivity.this, "User already exists.", Toast.LENGTH_SHORT).show();
                         } else {
-                            // User does not exist
-                            // Proceed with registration
                             register(email, password);
                         }
                     } else {
-                        // An error occurred while checking user existence
                         Toast.makeText(RegisterActivity.this, "Error checking user existence.", Toast.LENGTH_SHORT).show();
                     }
                 });
